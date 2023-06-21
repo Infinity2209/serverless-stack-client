@@ -1,7 +1,7 @@
 const config = {
     s3: {
         REGION: "us-east-1",
-        BUCKET: "ananta-notes",
+        BUCKET: "notes-ap-ananta",
     },
     apiGateway: {
         REGION: "us-east-1",
@@ -9,9 +9,9 @@ const config = {
     },
     cognito: {
         REGION: "us-east-1",
-        USER_POOL_ID: "us-east-1_AuztL6EbL",
-        APP_CLIENT_ID: "6ihpe0tcjgeqhmcmcs7ngosabg",
-        IDENTITY_POOL_ID: "us-east-1:3aad0b24-d092-4958-892d-4e89f9e404e0",
+        USER_POOL_ID: "us-east-1_qJluHej8r",
+        APP_CLIENT_ID: "711qlgpntcanku6rcp5840blga",
+        IDENTITY_POOL_ID: "us-east-1:355df27b-ba6f-435e-858b-7cdc4e61e4cc",
     },
 };
 

@@ -6,6 +6,8 @@ import NotFound from "./containers/NotFound";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import NewNote from "./containers/NewNote";
+import Notes from "./containers/Notes"
+import Settings from "./containers/Settings";
 
 export default function MyRoutes() {
   return (
@@ -15,6 +17,8 @@ export default function MyRoutes() {
       <Route exact path="/login" element={<Login />}/>
       <Route exact path="/signup" element={<Signup />}/>
       <Route exact path="/notes/new" element={<NewNote />}/>
+      <Route exact path="/notes/:id" element={<Notes />}/>
+      <Route exact path="/settings" element={<Settings />}/>
     </Routes>
   );
 }

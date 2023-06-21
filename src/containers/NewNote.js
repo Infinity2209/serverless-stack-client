@@ -7,11 +7,12 @@ import config from "../config";
 import "./NewNote.css";
 import { API } from "aws-amplify";
 import { useNavigate } from "react-router-dom";
+import { s3Upload } from "../libs/awsLib";
 export default function NewNote() {
     const file = useRef(null);
     const [content, setContent] = useState("");
     const [isLoading, setIsLoading] = useState(false);
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     function validateForm() {
         return content.length > 0;
     }
@@ -22,14 +23,15 @@ export default function NewNote() {
         event.preventDefault();
         if (file.current && file.current.size > config.MAX_ATTACHMENT_SIZE) {
             alert(
-                `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE /
-                1000000} MB.`
+                `Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE / 1000000
+                } MB.`
             );
             return;
         }
         setIsLoading(true);
         try {
-            await createNote({ content });
+            const attachment = file.current ? await s3Upload(file.current) : null;
+            await createNote({ content, attachment });
             navigate("/");
         } catch (e) {
             onError(e);
@@ -41,6 +43,7 @@ export default function NewNote() {
             body: note
         });
     }
+
     return (
         <div className="NewNote">
             <Form onSubmit={handleSubmit}>

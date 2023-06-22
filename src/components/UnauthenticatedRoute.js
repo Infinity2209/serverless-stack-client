@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { Route, useNavigate } from "react-router-dom";
 import { useAppContext } from "../libs/contextLib";

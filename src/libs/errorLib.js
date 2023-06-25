@@ -4,7 +4,7 @@ export function initSentry() {
     if (isLocal) {
         return;
     }
-    Sentry.init({ dsn: "https://your-dsn-id-here@sentry.io/123456" });
+    Sentry.init({ dsn: "https://f39ecf08b0604de68bc4d0b636ca9f86@o4505420608700416.ingest.sentry.io/4505420610535424" });
 }
 export function logError(error, errorInfo = null) {
     if (isLocal) {

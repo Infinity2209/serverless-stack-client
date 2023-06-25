@@ -7,6 +7,8 @@ import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
 import { useNavigate } from 'react-router-dom';
 import "./Login.css";
+import { Link } from "react-router-dom";
+
 export default function Login() {
     const navigate = useNavigate();
     const { userHasAuthenticated } = useAppContext();
@@ -50,6 +52,7 @@ export default function Login() {
                         onChange={handleFieldChange}
                     />
                 </Form.Group>
+                <Link to="/login/reset">Forgot password?</Link>
                 <LoaderButton
                     block
                     size="lg"

@@ -12,8 +12,6 @@ export default class ErrorBoundary extends React.Component {
     render() {
         return this.state.hasError ? (
             <div className="ErrorBoundary text-center">
-                496
-                SETUP AN ERROR BOUNDARY IN REACT Serverless Stack
                 <h3>Sorry there was a problem loading this page</h3>
             </div>
         ) : (

@@ -1,11 +1,17 @@
 @media all and (min-width: 480px) {
-    .Settings {
+    .Signup {
         padding: 60px 0;
-        margin: 0 auto;
-        max-width: 480px;
     }
 
-    .Settings>.LoaderButton:first-child {
-        margin-bottom: 15px;
+    .Signup form {
+        margin: 0 auto;
+        max-width: 320px;
     }
+
+    /* body {
+        background-image: url("D:\project\notes-app-client\src\img2.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    } */
 }

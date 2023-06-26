@@ -1,4 +1,7 @@
+/* eslint-disable react/style-prop-object */
 // App.js
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import "./App.css";
 import MyRoutes from "./Routes";
 import Nav from "react-bootstrap/Nav";
@@ -86,7 +89,7 @@ function App() {
                     <Nav.Link>Signup</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to="/login">
-                    <Nav.Link>Login</Nav.Link>
+                    <Nav.Link><FontAwesomeIcon icon={faUser} />  Login</Nav.Link>
                   </LinkContainer>
                 </>
               )}

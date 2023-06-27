@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import Form from "react-bootstrap/Form";
@@ -36,9 +37,18 @@ export default function Login() {
     }
   }
 
-  const handleFbLogin = () => {
-    userHasAuthenticated(true);
-  };
+  async function handleFbLogin() {
+    setIsLoading(true);
+    try {
+      const response = await Auth.federatedSignIn({ provider: "Facebook" });
+      setIsLoading(false);
+      userHasAuthenticated(true);
+      navigate("/");
+    } catch (e) {
+      onError(e);
+      setIsLoading(false);
+    }
+  }
 
   return (
     <div className="Login">

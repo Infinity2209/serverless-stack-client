@@ -70,7 +70,7 @@ function App() {
         <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
           <LinkContainer to="/">
             <Navbar.Brand className="font-weight-bold text-muted">
-              Scratch
+            <i class="material-icons" id="home">&#xe88a;</i> Scratch
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle />
@@ -79,14 +79,14 @@ function App() {
               {isAuthenticated ? (
                 <>
                   <LinkContainer to="/settings">
-                    <Nav.Link>Settings</Nav.Link>
+                    <Nav.Link><i class="material-icons">&#xe8b8;</i>Settings</Nav.Link>
                   </LinkContainer>
-                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                  <Nav.Link onClick={handleLogout}><i class="fa">&#xf235;</i> Logout</Nav.Link>
                 </>
               ) : (
                 <>
                   <LinkContainer to="/signup">
-                    <Nav.Link>Signup</Nav.Link>
+                    <Nav.Link><i class="fa">&#xf234;</i>  Signup</Nav.Link>
                   </LinkContainer>
                   <LinkContainer to="/login">
                     <Nav.Link><FontAwesomeIcon icon={faUser} />  Login</Nav.Link>

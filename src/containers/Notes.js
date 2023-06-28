@@ -126,7 +126,7 @@ export default function Notes() {
                         isLoading={isLoading}
                         disabled={!validateForm()}
                     >
-                        Save
+                        <i class="material-icons">&#xe161;</i> Save
                     </LoaderButton>
                     <LoaderButton
                         block
@@ -135,7 +135,7 @@ export default function Notes() {
                         onClick={handleDelete}
                         isLoading={isDeleting}
                     >
-                        Delete
+                        <i class="material-icons">&#xe872;</i> Delete
                     </LoaderButton>
                 </Form>
             )}

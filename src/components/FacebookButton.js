@@ -78,7 +78,7 @@ export default class FacebookButton extends Component {
         onClick={this.handleClick}
         disabled={this.state.isLoading}
       >
-        <i class="fa">&#xf082;</i> Login with Facebook
+        <i class="fa">&#xf082;</i> Continue with Facebook
       </LoaderButton>
     );
   }

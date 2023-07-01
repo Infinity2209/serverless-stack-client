@@ -6,9 +6,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-family: "Open Sans", sans-serif;
-  background-image: url("D:\project\notes-app-client\src\jess-bailey-UHqfUTDmdC4-unsplash.jpg");
+  background-image: url("./jess-bailey-UHqfUTDmdC4-unsplash.jpg");
   background-repeat: no-repeat;
-  background-size:cover;
+  background-size: cover;
   position: relative;
 }
 

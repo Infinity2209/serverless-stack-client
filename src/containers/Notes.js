@@ -37,9 +37,6 @@ export default function Notes() {
     function validateForm() {
         return content.length > 0;
     }
-    function formatFilename(str) {
-        return str.replace(/^\w+-/, "");
-    }
     function handleFileChange(event) {
         file.current = event.target.files[0];
     }
@@ -107,15 +104,18 @@ export default function Notes() {
                     <Form.Group controlId="file">
                         <Form.Label>Attachment</Form.Label>
                         {note.attachment && (
-                            <p>
-                                <a
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    href={note.attachmentURL}
-                                >
-                                    {formatFilename(note.attachment)}
-                                </a>
-                            </p>
+                            <div>
+                                
+                                <p>
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href={note.attachmentURL}
+                                    >
+                                       <img src={note.attachmentURL} alt="Attachment" style={{ maxWidth: "50%", height: "auto" }}/>
+                                    </a>
+                                </p>
+                            </div>
                         )}
                         <Form.Control onChange={handleFileChange} type="file" />
                     </Form.Group>

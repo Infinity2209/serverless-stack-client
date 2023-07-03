@@ -14,7 +14,7 @@ export default function Home() {
   const { isAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [highlightedNoteId, setHighlightedNoteId] = useState(null);
+  const [highlightedNoteId, setHighlightedNoteId] = useState([]);
   const listGroupRef = useRef(null);
 
   useEffect(() => {
@@ -34,13 +34,15 @@ export default function Home() {
   }, [isAuthenticated]);
 
   useEffect(() => {
-    if (highlightedNoteId && listGroupRef.current) {
-      const highlightedNote = listGroupRef.current.querySelector(
-        `#note-${highlightedNoteId}`
-      );
-      if (highlightedNote) {
-        highlightedNote.scrollIntoView({ behavior: "smooth" });
-      }
+    if (highlightedNoteId.length > 0 && listGroupRef.current) {
+      highlightedNoteId.forEach((noteId) => {
+        const highlightedNote = listGroupRef.current.querySelector(
+          `#note-${noteId}`
+        );
+        if (highlightedNote) {
+          highlightedNote.scrollIntoView({ behavior: "smooth" });
+        }
+      });
     }
   }, [highlightedNoteId]);
 
@@ -59,7 +61,7 @@ export default function Home() {
     try {
       await Promise.all(deletePromises);
       setNotes(notes.filter((note) => !notesToDelete.includes(note)));
-      setHighlightedNoteId(null);
+      setHighlightedNoteId([]);
     } catch (e) {
       onError(e);
     }
@@ -74,16 +76,13 @@ export default function Home() {
       const loadedNotes = await loadNotes();
       setNotes(loadedNotes);
       if (loadedNotes.length > 0) {
-        const matchingNote = loadedNotes.find(
+        const matchingNotes = loadedNotes.filter(
           (note) => note.content.toLowerCase() === searchTerm.toLowerCase()
         );
-        if (matchingNote) {
-          setHighlightedNoteId(matchingNote.noteId);
-        } else {
-          setHighlightedNoteId(null);
-        }
+        const matchingNoteIds = matchingNotes.map((note) => note.noteId);
+        setHighlightedNoteId(matchingNoteIds);
       } else {
-        setHighlightedNoteId(null);
+        setHighlightedNoteId([]);
       }
     } catch (e) {
       onError(e);
@@ -94,14 +93,9 @@ export default function Home() {
     return (
       <>
         <LinkContainer to="/notes/new">
-          <ListGroup.Item
-            action
-            className="py-3 text-nowrap text-truncate"
-          >
+          <ListGroup.Item action className="py-3 text-nowrap text-truncate">
             <BsPencilSquare size={17} />
-            <span className="ml-2 font-weight-bold">
-              Create a new note
-            </span>
+            <span className="ml-2 font-weight-bold">Create a new note</span>
           </ListGroup.Item>
         </LinkContainer>
         {notes.map(({ noteId, content, createdAt }) => (
@@ -109,7 +103,7 @@ export default function Home() {
             <ListGroup.Item
               action
               id={`note-${noteId}`}
-              className={highlightedNoteId === noteId ? "highlighted" : ""}
+              className={highlightedNoteId.includes(noteId) ? "highlighted" : ""}
             >
               <span className="font-weight-bold">
                 {content.trim().split("\n")[0]}
@@ -147,22 +141,23 @@ export default function Home() {
               placeholder="Enter common word"
               value={searchTerm}
               onChange={handleSearch}
+              style={{ width: "150px", marginRight: "10px" }}
             />
-            <InputGroup.Append>
-              <Button
-                variant="primary"
-                onClick={handleSearchClick}
-              >
-                Search
-              </Button>
-              <Button
-                variant="danger"
-                onClick={deleteNotesWithCommonWord}
-              >
-                Delete
-              </Button>
-            </InputGroup.Append>
+            <Button
+              variant="primary"
+              className="search-button"
+              onClick={handleSearchClick}
+            >
+              Search
+            </Button>
           </InputGroup>
+          <Button
+            variant="danger"
+            className="delete-button"
+            onClick={deleteNotesWithCommonWord}
+          >
+            Delete
+          </Button>
         </div>
         <ListGroup ref={listGroupRef}>
           {!isLoading && renderNotesList(notes)}
@@ -171,9 +166,5 @@ export default function Home() {
     );
   }
 
-  return (
-    <div className="Home">
-      {isAuthenticated ? renderNotes() : renderLander()}
-    </div>
-  );
+  return <div className="Home">{isAuthenticated ? renderNotes() : renderLander()}</div>;
 }

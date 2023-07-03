@@ -87,32 +87,65 @@
 
 .notes-list {
     margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .note-item {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 12px 20px;
     margin-bottom: 10px;
     background-color: #f7f7f7;
     border: 1px solid #ddd;
-    border-radius: 6px;
+    border-radius: 10px;
     cursor: pointer;
+    width: 300px;
+    /* Adjust the width as needed */
+    height: 200px;
+    /* Adjust the height as needed */
+    margin-top: 10px;
+    /* Add margin to the top */
+    margin-bottom: 20px;
+    /* Add margin to the bottom */
 }
+
+.note-content {
+    flex-grow: 1;
+    font-size: 14px;
+    /* Adjust the font size as needed */
+}
+
+.note-attachment {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 12px;
+    /* Adjust the font size of the word "Attachment" */
+}
+
+.note-attachment img {
+    max-width: 100%;
+    max-height: 80%;
+    /* Adjust the max-height to leave space for the attachment word */
+}
+
 
 .highlighted {
     background-color: yellow;
 }
 
-.note-content {
-    flex-grow: 1;
-}
-
 .note-actions {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
+
+/* Add any additional styling for note items or actions */
 
 .note-actions svg {
     margin-left: 10px;

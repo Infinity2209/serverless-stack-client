@@ -75,19 +75,17 @@ export default function Home() {
     try {
       const loadedNotes = await loadNotes();
       setNotes(loadedNotes);
-      if (loadedNotes.length > 0) {
-        const matchingNoteIds = loadedNotes.reduce((acc, note) => {
-          const words = note.content.toLowerCase().split(/\s+/); // Split by whitespace
-          const isMatch = words.some((word) => word === searchTerm.toLowerCase());
-          if (isMatch) {
-            acc.push(note.noteId);
-          }
-          return acc;
-        }, []);
-        setHighlightedNoteId(matchingNoteIds);
-      } else {
-        setHighlightedNoteId([]);
-      }
+
+      const matchingNoteIds = loadedNotes.reduce((acc, note) => {
+        const words = note.content.toLowerCase().split(/\s+/); // Split by whitespace
+        const isMatch = words.some((word) => word.includes(searchTerm.toLowerCase()));
+        if (isMatch) {
+          acc.push(note.noteId);
+        }
+        return acc;
+      }, []);
+
+      setHighlightedNoteId(matchingNoteIds);
     } catch (e) {
       onError(e);
     }
@@ -96,32 +94,32 @@ export default function Home() {
   function renderNotesList(notes) {
     return (
       <div className="notes-list">
-        {!isLoading &&
-          notes.map(({ noteId, content, createdAt }) => (
-            <LinkContainer key={noteId} to={`/notes/${noteId}`}>
-              <div
-                className={`note-item ${highlightedNoteId.includes(noteId) ? "highlighted" : ""}`}
-                id={`note-${noteId}`}
-              >
-                <div className="note-content">
-                  <span className="font-weight-bold">
-                    {content.trim().split("\n")[0]}
-                  </span>
-                  <br />
-                  <span className="text-muted">
-                    Created: {new Date(createdAt).toLocaleString()}
-                  </span>
-                </div>
-                <div className="note-actions">
-                  {/* Add any note actions or buttons here */}
-                </div>
+        {notes.map(({ noteId, content, createdAt, attachment }) => {
+          const isHighlighted = highlightedNoteId.includes(noteId);
+          return (
+            <div
+              key={noteId}
+              id={`note-${noteId}`}
+              className={`note-item${isHighlighted ? " highlighted" : ""}`}
+            >
+              <div className="note-content">
+                <span className="font-weight-bold">{content.trim().split("\n")[0]}</span>
+                <br />
+                <span className="text-muted">Created: {new Date(createdAt).toLocaleString()}</span>
               </div>
-            </LinkContainer>
-          ))}
+              {attachment && (
+                <div className="note-attachment">
+                  <span className="text-muted">Attachment:</span>
+                  <img src={attachment} alt="Attachment" />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     );
   }
-  
+
   function renderLander() {
     return (
       <div className="lander">

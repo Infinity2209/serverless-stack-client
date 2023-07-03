@@ -76,10 +76,14 @@ export default function Home() {
       const loadedNotes = await loadNotes();
       setNotes(loadedNotes);
       if (loadedNotes.length > 0) {
-        const matchingNotes = loadedNotes.filter(
-          (note) => note.content.toLowerCase() === searchTerm.toLowerCase()
-        );
-        const matchingNoteIds = matchingNotes.map((note) => note.noteId);
+        const matchingNoteIds = loadedNotes.reduce((acc, note) => {
+          const words = note.content.toLowerCase().split(/\s+/); // Split by whitespace
+          const isMatch = words.some((word) => word === searchTerm.toLowerCase());
+          if (isMatch) {
+            acc.push(note.noteId);
+          }
+          return acc;
+        }, []);
         setHighlightedNoteId(matchingNoteIds);
       } else {
         setHighlightedNoteId([]);

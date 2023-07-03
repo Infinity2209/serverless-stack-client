@@ -95,28 +95,33 @@ export default function Home() {
 
   function renderNotesList(notes) {
     return (
-      <>
-        {notes.map(({ noteId, content, createdAt }) => (
-          <LinkContainer key={noteId} to={`/notes/${noteId}`}>
-            <ListGroup.Item
-              action
-              id={`note-${noteId}`}
-              className={highlightedNoteId.includes(noteId) ? "highlighted" : ""}
-            >
-              <span className="font-weight-bold">
-                {content.trim().split("\n")[0]}
-              </span>
-              <br />
-              <span className="text-muted">
-                Created: {new Date(createdAt).toLocaleString()}
-              </span>
-            </ListGroup.Item>
-          </LinkContainer>
-        ))}
-      </>
+      <div className="notes-list">
+        {!isLoading &&
+          notes.map(({ noteId, content, createdAt }) => (
+            <LinkContainer key={noteId} to={`/notes/${noteId}`}>
+              <div
+                className={`note-item ${highlightedNoteId.includes(noteId) ? "highlighted" : ""}`}
+                id={`note-${noteId}`}
+              >
+                <div className="note-content">
+                  <span className="font-weight-bold">
+                    {content.trim().split("\n")[0]}
+                  </span>
+                  <br />
+                  <span className="text-muted">
+                    Created: {new Date(createdAt).toLocaleString()}
+                  </span>
+                </div>
+                <div className="note-actions">
+                  {/* Add any note actions or buttons here */}
+                </div>
+              </div>
+            </LinkContainer>
+          ))}
+      </div>
     );
   }
-
+  
   function renderLander() {
     return (
       <div className="lander">

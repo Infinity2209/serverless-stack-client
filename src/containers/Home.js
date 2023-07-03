@@ -96,12 +96,6 @@ export default function Home() {
   function renderNotesList(notes) {
     return (
       <>
-        <LinkContainer to="/notes/new">
-          <ListGroup.Item action className="py-3 text-nowrap text-truncate">
-            <BsPencilSquare size={17} />
-            <span className="ml-2 font-weight-bold">Create a new note</span>
-          </ListGroup.Item>
-        </LinkContainer>
         {notes.map(({ noteId, content, createdAt }) => (
           <LinkContainer key={noteId} to={`/notes/${noteId}`}>
             <ListGroup.Item
@@ -154,14 +148,21 @@ export default function Home() {
             >
               Search
             </Button>
+            <Button
+              variant="danger"
+              className="delete-button"
+              onClick={deleteNotesWithCommonWord}
+            >
+              Delete
+            </Button>
           </InputGroup>
-          <Button
-            variant="danger"
-            className="delete-button"
-            onClick={deleteNotesWithCommonWord}
-          >
-            Delete
-          </Button>
+        </div>
+        <div className="create-note-button-container">
+          <LinkContainer to="/notes/new">
+            <Button variant="success" className="create-note-button">
+              <BsPencilSquare size={17} /> Create a new note
+            </Button>
+          </LinkContainer>
         </div>
         <ListGroup ref={listGroupRef}>
           {!isLoading && renderNotesList(notes)}

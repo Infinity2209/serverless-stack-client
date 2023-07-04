@@ -4,7 +4,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { useAppContext } from "../libs/contextLib";
 import { onError } from "../libs/errorLib";
 import "./Home.css";
-import { API } from "aws-amplify";
+import { API, Storage } from "aws-amplify";
 import { BsPencilSquare } from "react-icons/bs";
 import { LinkContainer } from "react-router-bootstrap";
 import { Button, InputGroup, FormControl } from "react-bootstrap";
@@ -16,6 +16,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [highlightedNoteId, setHighlightedNoteId] = useState([]);
   const listGroupRef = useRef(null);
+  const [filteredNotes, setFilteredNotes] = useState([]);
 
   useEffect(() => {
     async function onLoad() {
@@ -47,7 +48,22 @@ export default function Home() {
   }, [highlightedNoteId]);
 
   async function loadNotes() {
-    return API.get("notes", `/notes?search=${searchTerm}`);
+    const response = await API.get("notes", "/notes");
+    const notesWithAttachmentURL = await Promise.all(
+      response.map(async (note) => {
+        if (note.attachment) {
+          const attachmentURL = await Storage.vault.get(note.attachment);
+          return { ...note, attachmentURL };
+        }
+        return note;
+      })
+    );
+    const filteredNotes = notesWithAttachmentURL.filter((note) =>
+      note.content && note.content.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredNotes(filteredNotes);
+    return notesWithAttachmentURL;
   }
 
   async function deleteNotesWithCommonWord() {
@@ -93,30 +109,41 @@ export default function Home() {
 
   function renderNotesList(notes) {
     return (
-      <div className="notes-list">
-        {notes.map(({ noteId, content, createdAt, attachment }) => {
-          const isHighlighted = highlightedNoteId.includes(noteId);
-          return (
-            <LinkContainer key={noteId} to={`/notes/${noteId}`}>
-              <div
-                id={`note-${noteId}`}
-                className={`note-item${isHighlighted ? " highlighted" : ""}`}
-              >
-                <div className="note-content">
-                  <span className="font-weight-bold">{content.trim().split("\n")[0]}</span>
-                  <br />
-                  <span className="text-muted">Created: {new Date(createdAt).toLocaleString()}</span>
-                </div>
-                {attachment && (
-                  <div className="note-attachment">
-                    <span className="text-muted">Attachment:</span>
-                    <img src={attachment} alt="Attachment" />
+      <div className="notes-blocks">
+        {notes
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .map(({ noteId, content, createdAt, attachmentURL }) => (
+            <div key={noteId} className="note-block">
+              <LinkContainer to={`/notes/${noteId}`}>
+                <ListGroup.Item
+                  action
+                  className={`custom-note-item ${
+                    highlightedNoteId.includes(noteId) ? 'highlighted' : ''
+                  }`}
+                >
+                  <div className="note-content">
+                    {attachmentURL && (
+                      <div className="attachment">
+                        <img
+                          src={attachmentURL}
+                          alt={`Note Attachment ${noteId}`}
+                          className="attachment-image"
+                        />
+                      </div>
+                    )}
+                    <div className="note-text">
+                      <span className="font-weight-bold">{content.trim().split('\n')[0]}</span>
+                    </div>
+                    <div className="note-details">
+                      <span className="created-at">
+                        Created: {new Date(createdAt).toLocaleString()}
+                      </span>
+                    </div>
                   </div>
-                )}
-              </div>
-            </LinkContainer>
-          );
-        })}
+                </ListGroup.Item>
+              </LinkContainer>
+            </div>
+          ))}
       </div>
     );
   }

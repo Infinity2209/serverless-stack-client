@@ -97,29 +97,30 @@ export default function Home() {
         {notes.map(({ noteId, content, createdAt, attachment }) => {
           const isHighlighted = highlightedNoteId.includes(noteId);
           return (
-            <div
-              key={noteId}
-              id={`note-${noteId}`}
-              className={`note-item${isHighlighted ? " highlighted" : ""}`}
-            >
-              <div className="note-content">
-                <span className="font-weight-bold">{content.trim().split("\n")[0]}</span>
-                <br />
-                <span className="text-muted">Created: {new Date(createdAt).toLocaleString()}</span>
-              </div>
-              {attachment && (
-                <div className="note-attachment">
-                  <span className="text-muted">Attachment:</span>
-                  <img src={attachment} alt="Attachment" />
+            <LinkContainer key={noteId} to={`/notes/${noteId}`}>
+              <div
+                id={`note-${noteId}`}
+                className={`note-item${isHighlighted ? " highlighted" : ""}`}
+              >
+                <div className="note-content">
+                  <span className="font-weight-bold">{content.trim().split("\n")[0]}</span>
+                  <br />
+                  <span className="text-muted">Created: {new Date(createdAt).toLocaleString()}</span>
                 </div>
-              )}
-            </div>
+                {attachment && (
+                  <div className="note-attachment">
+                    <span className="text-muted">Attachment:</span>
+                    <img src={attachment} alt="Attachment" />
+                  </div>
+                )}
+              </div>
+            </LinkContainer>
           );
         })}
       </div>
     );
   }
-
+  
   function renderLander() {
     return (
       <div className="lander">
